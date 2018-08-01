@@ -12,8 +12,7 @@ def keyboard1():
     """
     keyboard = types.ReplyKeyboardMarkup(True, True)
     keyboard.row('Просмотреть заявки', 'Создать заявку')
-    global key1
-    key1 = keyboard
+    return keyboard
 
 def keyboard2():
     """
@@ -23,8 +22,7 @@ def keyboard2():
     btn1 = types.InlineKeyboardButton('Вернуться', callback_data='quit')
     btn2 = types.InlineKeyboardButton('Cледующая страница', callback_data='next')
     keyboard.add(btn1, btn2)
-    global key2
-    key2 = keyboard
+    return keyboard
 
 def keyboard3():
     """
@@ -35,13 +33,12 @@ def keyboard3():
     btn2 = types.InlineKeyboardButton('Предыдущая страница', callback_data='back')
     btn3 = types.InlineKeyboardButton('Cледующая страница', callback_data='next')
     keyboard.add(btn1, btn2, btn3)
-    global key3
-    key3 = keyboard
+    return keyboard
 
 @bot.message_handler(commands=['start'])
 def start(message):
     keyboard1()
-    bot.send_message(message.chat.id, 'Привет, я бот, можешь смотреть или создать заявку', reply_markup=key1)
+    bot.send_message(message.chat.id, 'Привет, я бот, можешь смотреть или создать заявку', reply_markup=keyboard1)
 
 @bot.message_handler(func=lambda message: message.text == 'Просмотреть заявки', content_types=['text'])
 def orders(message):
@@ -51,18 +48,18 @@ def orders(message):
 @bot.callback_query_handler(func=lambda call: call.data == 'quit')
 def start(call):
     keyboard1()
-    bot.send_message(chat_id=call.message.chat.id, text='Привет, я бот, можешь смотреть или создать заявку', reply_markup=key1)
+    bot.send_message(chat_id=call.message.chat.id, text='Привет, я бот, можешь смотреть или создать заявку', reply_markup=keyboard1)
 
 @bot.callback_query_handler(func=lambda call: call.data == 'next')
 def callback_next(call):
     keyboard3()
-    bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text='Заявки, страница ', reply_markup=key3)
+    bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text='Заявки, страница ', reply_markup=keyboard3)
 
 @bot.callback_query_handler(func=lambda call: call.data == 'back')
 def callback_next(call):
     # num = num - 1
     keyboard3()
-    bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text='Заявки, страница ', reply_markup=key3)
+    bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text='Заявки, страница ', reply_markup=keyboard3)
 
 
 
@@ -98,7 +95,7 @@ def money(message):
 @bot.message_handler(func=lambda message: message.text == 'Вернуться назад', content_types=['text'])
 def start(message):
     keyboard1()
-    bot.send_message(message.chat.id, 'Привет, я бот, можешь смотреть или создать заявку', reply_markup=key1)
+    bot.send_message(message.chat.id, 'Привет, я бот, можешь смотреть или создать заявку', reply_markup=keyboard1)
 
 # bot.send_message()
 
