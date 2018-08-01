@@ -5,7 +5,7 @@ from telebot import types
 
 bot = telebot.TeleBot(config.token)
 
-def keyboard1():
+def keyboard_start():
     """
     клавиатура со старта
     :return: кнопки "Просмотреть заявки", "Создать заявку"
@@ -14,7 +14,7 @@ def keyboard1():
     keyboard.row('Просмотреть заявки', 'Создать заявку')
     return keyboard
 
-def keyboard2():
+def keyboard_page_one():
     """
     :return: Вернуться, Следующая страница
     """
@@ -24,7 +24,7 @@ def keyboard2():
     keyboard.add(btn1, btn2)
     return keyboard
 
-def keyboard3():
+def keyboard_next():
     """
     :return: Вернуться, Предыдущая страница, Следующая страница
     """
@@ -37,29 +37,23 @@ def keyboard3():
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    keyboard1()
-    bot.send_message(message.chat.id, 'Привет, я бот, можешь смотреть или создать заявку', reply_markup=keyboard1())
+    bot.send_message(message.chat.id, 'Привет, я бот, можешь смотреть или создать заявку', reply_markup=keyboard_start())
 
 @bot.message_handler(func=lambda message: message.text == 'Просмотреть заявки', content_types=['text'])
 def orders(message):
-    keyboard2()
-    bot.send_message(message.chat.id, 'Заявки:', reply_markup=keyboard2())
+    bot.send_message(message.chat.id, 'Заявки:', reply_markup=keyboard_page_one())
 
 @bot.callback_query_handler(func=lambda call: call.data == 'quit')
 def start(call):
-    keyboard1()
-    bot.send_message(chat_id=call.message.chat.id, text='Привет, я бот, можешь смотреть или создать заявку', reply_markup=keyboard1())
+    bot.send_message(chat_id=call.message.chat.id, text='Привет, я бот, можешь смотреть или создать заявку', reply_markup=keyboard_start())
 
 @bot.callback_query_handler(func=lambda call: call.data == 'next')
 def callback_next(call):
-    keyboard3()
-    bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text='Заявки, страница ', reply_markup=keyboard3())
+    bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text='Заявки, страница ', reply_markup=keyboard_next())
 
 @bot.callback_query_handler(func=lambda call: call.data == 'back')
 def callback_next(call):
-    # num = num - 1
-    keyboard3()
-    bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text='Заявки, страница ', reply_markup=keyboard3())
+    bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text='Заявки, страница ', reply_markup=keyboard_page_one())
 
 
 
@@ -84,7 +78,7 @@ def text(message):
 
 @bot.message_handler(func=lambda message: message.text == '@example', content_types=['text'])
 def username(message):
-        bot.send_message(message.chat.id, 'Введи сумму в рублях в цифрах')
+    bot.send_message(message.chat.id, 'Введи сумму в рублях в цифрах')
 
 @bot.message_handler(func=lambda message: message.text == '1000', content_types=['text'])
 def money(message):
@@ -94,8 +88,7 @@ def money(message):
 
 @bot.message_handler(func=lambda message: message.text == 'Вернуться назад', content_types=['text'])
 def start(message):
-    keyboard1()
-    bot.send_message(message.chat.id, 'Привет, я бот, можешь смотреть или создать заявку', reply_markup=keyboard1())
+    bot.send_message(message.chat.id, 'Привет, я бот, можешь смотреть или создать заявку', reply_markup=keyboard_start())
 
 # bot.send_message()
 
