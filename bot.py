@@ -43,7 +43,7 @@ def start(message):
 @bot.message_handler(func=lambda message: message.text == 'Просмотреть заявки', content_types=['text'])
 def orders(message):
     keyboard2()
-    bot.send_message(message.chat.id, 'Заявки:', reply_markup=key2)
+    bot.send_message(message.chat.id, 'Заявки:', reply_markup=keyboard2())
 
 @bot.callback_query_handler(func=lambda call: call.data == 'quit')
 def start(call):
