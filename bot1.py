@@ -46,7 +46,7 @@ def create_order(message):
 @bot.message_handler(func= lambda message: message.text == 'Юзернейм', content_types=['text'])
 def username(message):
     keyboard = types.ReplyKeyboardMarkup(True, )
-    keyboard.row('Готово')
+    keyboard.row('Время размещения')
     bot.send_message(message.chat.id, 'Вводи юзернейм, как введешь - жми Время размещения',
                      reply_markup=keyboard)
 
